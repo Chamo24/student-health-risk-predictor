@@ -1,16 +1,14 @@
-# Student Health Risk Predictor
-
+Student Health Risk Predictor
 A web application that predicts a student's health condition (Healthy, At-Risk, Unhealthy) based on lifestyle data, using an optimized ensemble machine learning model. This project was developed as part of the CIS6005 Computational Intelligence module.
 
-## Quick Start
+Quick Start
+1. Install Dependencies
+Make sure you have Python 3.8+ installed. Navigate to the WEBAPP directory in your terminal and install the required packages:
 
-### 1. Install Dependencies
-Make sure you have Python 3.8+ installed. Navigate to the `WEBAPP` directory in your terminal and install the required packages:
+Bash
 
-```bash
 cd WEBAPP
 pip install -r requirements.txt
-
 2. Run the Application
 Once the dependencies are installed, start the Flask web server:
 
@@ -28,8 +26,8 @@ Multi-Class Prediction: Classifies health status into one of three distinct cate
 Confidence Score: Provides a confidence percentage for each prediction to indicate the model's certainty.
 Responsive UI: A clean, user-friendly single-page interface built with HTML, CSS, and Bootstrap.
 Rigorous Data Pipeline: Implements a full preprocessing pipeline including feature engineering, outlier handling, and missing value imputation.
-
-📁 Project Structure
+Project Structure
+text
 
 .
 ├── Predicting_Student_Health_Risk.ipynb  # Google Colab Notebook for EDA & Model Training
@@ -41,16 +39,12 @@ Rigorous Data Pipeline: Implements a full preprocessing pipeline including featu
     ├── model/                            # Saved ML model, encoder, and feature list
     ├── templates/                        # HTML file for the user interface
     └── static/                           # CSS and other static assets
-
-
 Technologies Used
 Development Environment: Google Colab (for Model Training) & Local Environment (for Web App)
 Backend: Python, Flask
 Machine Learning: Scikit-Learn, XGBoost, CatBoost, LightGBM, Optuna
 Data Science: Pandas, NumPy, Matplotlib, Seaborn
 Frontend: HTML5, CSS3, JavaScript, Bootstrap
-
-
 Notes
 The machine learning model was trained using Google Colab, and the exported model (best_health_model.pkl) is loaded locally in the Flask app.
 The web application is for demonstration purposes only and should not be used for actual medical diagnosis.
