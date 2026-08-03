@@ -10,12 +10,12 @@ Make sure you have Python 3.8+ installed. Navigate to the `WEBAPP` directory in 
 ```bash
 cd WEBAPP
 pip install -r requirements.txt
+
 2. Run the Application
 Once the dependencies are installed, start the Flask web server:
 
-Bash
-
 python app.py
+
 The application will be running on http://127.0.0.1:5001.
 
 3. Access the Application
@@ -29,6 +29,7 @@ Responsive UI: A clean, user-friendly single-page interface built with HTML, CSS
 Rigorous Data Pipeline: Implements a full preprocessing pipeline including feature engineering, outlier handling, and missing value imputation.
 
 📁 Project Structure
+
 .
 ├── Predicting_Student_Health_Risk.ipynb  # Google Colab Notebook for EDA & Model Training
 ├── submission.csv                        # Final Kaggle Leaderboard Submission
@@ -46,6 +47,8 @@ Backend: Python, Flask
 Machine Learning: Scikit-Learn, XGBoost, CatBoost, LightGBM, Optuna
 Data Science: Pandas, NumPy, Matplotlib, Seaborn
 Frontend: HTML5, CSS3, JavaScript, Bootstrap
+
+
 Notes
 The machine learning model was trained using Google Colab, and the exported model (best_health_model.pkl) is loaded locally in the Flask app.
 The web application is for demonstration purposes only and should not be used for actual medical diagnosis.
