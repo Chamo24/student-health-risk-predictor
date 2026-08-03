@@ -32,7 +32,7 @@ Responsive UI: A clean, user-friendly single-page interface built with HTML, CSS
 Rigorous Data Pipeline: Implements a full preprocessing pipeline including feature engineering, outlier handling, and missing value imputation.
 
 📁 Project Structure
-
+Plaintext
 .
 ├── Predicting_Student_Health_Risk.ipynb  # Google Colab Notebook for EDA & Model Training
 ├── submission.csv                        # Final Kaggle Leaderboard Submission
