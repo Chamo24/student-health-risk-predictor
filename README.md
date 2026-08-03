@@ -1,12 +1,13 @@
-Student Health Risk Predictor
+# Student Health Risk Predictor
+
 A web application that predicts a student's health condition (Healthy, At-Risk, Unhealthy) based on lifestyle data, using an optimized ensemble machine learning model. This project was developed as part of the CIS6005 Computational Intelligence module.
 
-Quick Start
-1. Install Dependencies
-Make sure you have Python 3.8+ installed. Navigate to the WEBAPP directory in your terminal and install the required packages:
+## Quick Start
 
-Bash
+### 1. Install Dependencies
+Make sure you have Python 3.8+ installed. Navigate to the `WEBAPP` directory in your terminal and install the required packages:
 
+```bash
 cd WEBAPP
 pip install -r requirements.txt
 2. Run the Application
@@ -26,9 +27,8 @@ Multi-Class Prediction: Classifies health status into one of three distinct cate
 Confidence Score: Provides a confidence percentage for each prediction to indicate the model's certainty.
 Responsive UI: A clean, user-friendly single-page interface built with HTML, CSS, and Bootstrap.
 Rigorous Data Pipeline: Implements a full preprocessing pipeline including feature engineering, outlier handling, and missing value imputation.
-Project Structure
-text
 
+📁 Project Structure
 .
 ├── Predicting_Student_Health_Risk.ipynb  # Google Colab Notebook for EDA & Model Training
 ├── submission.csv                        # Final Kaggle Leaderboard Submission
@@ -39,6 +39,7 @@ text
     ├── model/                            # Saved ML model, encoder, and feature list
     ├── templates/                        # HTML file for the user interface
     └── static/                           # CSS and other static assets
+
 Technologies Used
 Development Environment: Google Colab (for Model Training) & Local Environment (for Web App)
 Backend: Python, Flask
