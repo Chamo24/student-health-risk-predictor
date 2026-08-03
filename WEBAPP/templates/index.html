@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HealthGuard AI | Predictive Vitals Intelligence</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#08080a;
+    --bg-raised:#131316;
+    --bg-card:#0f0f12;
+    --line:#232228;
+    --crimson:#c1121f;
+    --crimson-bright:#ff3b4e;
+    --amber:#f2a154;
+    --text:#e7e5e6;
+    --text-dim:#8f8b91;
+    --text-faint:#5b5760;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4,.display-font{
+    font-family:'Sora',sans-serif;
+    letter-spacing:-0.02em;
+  }
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  ::selection{background:var(--crimson);color:#fff;}
+
+  /* ---------- Nav ---------- */
+  .navbar{
+    background:rgba(8,8,10,0.72) !important;
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+    padding-top:16px;
+    padding-bottom:16px;
+    transition:background .3s ease;
+  }
+  .navbar-brand{
+    font-family:'Sora',sans-serif;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    color:var(--text) !important;
+  }
+  .navbar-brand .accent{color:var(--crimson-bright);}
+  .nav-link{
+    color:var(--text-dim) !important;
+    font-size:0.92rem;
+    font-weight:500;
+    margin:0 6px;
+    position:relative;
+    transition:color .2s ease;
+  }
+  .nav-link::after{
+    content:'';
+    position:absolute;
+    left:0; bottom:-3px;
+    width:0; height:1px;
+    background:var(--crimson-bright);
+    transition:width .25s ease;
+  }
+  .nav-link:hover{color:var(--text) !important;}
+  .nav-link:hover::after{width:100%;}
+  .nav-cta{
+    border:1px solid var(--crimson);
+    border-radius:999px;
+    padding:8px 20px !important;
+    color:var(--text) !important;
+  }
+  .nav-cta:hover{background:var(--crimson);border-color:var(--crimson);}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    position:relative;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(193,18,31,0.16), transparent 60%),
+      var(--bg);
+    padding-top:120px;
+    padding-bottom:60px;
+  }
+  .hero::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size:42px 42px;
+    mask-image:radial-gradient(ellipse 70% 60% at 50% 20%, black, transparent 75%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.75rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--crimson-bright);
+    border:1px solid rgba(193,18,31,0.4);
+    background:rgba(193,18,31,0.08);
+    padding:6px 14px;
+    border-radius:999px;
+  }
+  .eyebrow .dot{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--crimson-bright);
+    box-shadow:0 0 0 0 rgba(255,59,78,0.7);
+    animation:pulse-dot 1.8s infinite;
+  }
+  @keyframes pulse-dot{
+    0%{box-shadow:0 0 0 0 rgba(255,59,78,0.55);}
+    70%{box-shadow:0 0 0 8px rgba(255,59,78,0);}
+    100%{box-shadow:0 0 0 0 rgba(255,59,78,0);}
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 5.6vw, 4.6rem);
+    font-weight:700;
+    line-height:1.04;
+  }
+  .hero h1 .glow{
+    color:var(--crimson-bright);
+    text-shadow:0 0 34px rgba(255,59,78,0.35);
+  }
+  .hero p.lead{
+    color:var(--text-dim);
+    font-size:1.15rem;
+    max-width:520px;
+  }
+
+  .btn-vital{
+    background:var(--crimson);
+    color:#fff;
+    border:1px solid var(--crimson);
+    border-radius:10px;
+    padding:14px 30px;
+    font-weight:600;
+    letter-spacing:0.01em;
+    transition:all .25s ease;
+  }
+  .btn-vital:hover{
+    background:var(--crimson-bright);
+    border-color:var(--crimson-bright);
+    color:#fff;
+    box-shadow:0 8px 30px -6px rgba(255,59,78,0.55);
+    transform:translateY(-2px);
+  }
+  .btn-ghost{
+    background:transparent;
+    color:var(--text);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px 26px;
+    font-weight:500;
+    transition:all .25s ease;
+  }
+  .btn-ghost:hover{
+    border-color:var(--text-dim);
+    color:#fff;
+  }
+
+  /* ECG signature line */
+  .ecg-wrap{
+    position:relative;
+    height:120px;
+    margin-top:56px;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .ecg-wrap svg{width:100%;height:100%;display:block;}
+  .ecg-path{
+    fill:none;
+    stroke:var(--crimson-bright);
+    stroke-width:2;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    filter:drop-shadow(0 0 6px rgba(255,59,78,0.55));
+    stroke-dasharray:1400;
+    stroke-dashoffset:1400;
+    animation:draw-ecg 3.2s linear infinite;
+  }
+  @keyframes draw-ecg{
+    0%{stroke-dashoffset:1400;}
+    60%{stroke-dashoffset:0;}
+    100%{stroke-dashoffset:-1400;}
+  }
+  .ecg-label{
+    position:absolute;
+    top:10px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.7rem;
+    letter-spacing:0.08em;
+    color:var(--text-faint);
+    text-transform:uppercase;
+  }
+  .ecg-label.left{left:0;}
+  .ecg-label.right{right:0;}
+
+  section{padding:100px 0;position:relative;}
+  .section-alt{background:var(--bg-raised);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+
+  .section-eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.75rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--crimson-bright);
+    margin-bottom:10px;
+    display:block;
+  }
+  .section-title{
+    font-size:clamp(1.9rem,3.4vw,2.6rem);
+    font-weight:700;
+    margin-bottom:0;
+  }
+
+  /* Reveal on scroll */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.is-visible{opacity:1;transform:translateY(0);}
+
+  /* About stats */
+  .stat-box{
+    border:1px solid var(--line);
+    background:var(--bg-card);
+    border-radius:14px;
+    padding:26px 22px;
+    text-align:center;
+    transition:border-color .25s ease, transform .25s ease;
+  }
+  .stat-box:hover{border-color:rgba(193,18,31,0.5);transform:translateY(-4px);}
+  .stat-box .num{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:2.1rem;
+    font-weight:600;
+    color:var(--crimson-bright);
+  }
+  .stat-box .label{
+    color:var(--text-dim);
+    font-size:0.85rem;
+    margin-top:4px;
+  }
+  .about-list li{
+    display:flex;
+    gap:14px;
+    padding:14px 0;
+    border-bottom:1px solid var(--line);
+    color:var(--text-dim);
+  }
+  .about-list li:last-child{border-bottom:none;}
+  .about-list i{color:var(--crimson-bright);margin-top:3px;}
+  .about-list strong{color:var(--text);font-weight:600;}
+
+  /* Services */
+  .vital-card{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:34px 28px;
+    height:100%;
+    position:relative;
+    overflow:hidden;
+    transition:transform .3s ease, border-color .3s ease;
+  }
+  .vital-card::before{
+    content:'';
+    position:absolute;
+    top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg, transparent, var(--crimson-bright), transparent);
+    opacity:0;
+    transition:opacity .3s ease;
+  }
+  .vital-card:hover{transform:translateY(-6px);border-color:rgba(193,18,31,0.55);}
+  .vital-card:hover::before{opacity:1;}
+  .vital-card .icon-wrap{
+    width:54px;height:54px;
+    border-radius:12px;
+    background:rgba(193,18,31,0.12);
+    border:1px solid rgba(193,18,31,0.35);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:20px;
+    color:var(--crimson-bright);
+    font-size:1.3rem;
+  }
+  .vital-card h4{font-size:1.15rem;font-weight:600;margin-bottom:10px;}
+  .vital-card p{color:var(--text-dim);font-size:0.94rem;margin-bottom:0;}
+  .vital-card .tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.68rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--text-faint);
+    position:absolute;
+    top:24px;right:26px;
+  }
+
+  /* Predict form -> vitals console */
+  .console{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:44px;
+    position:relative;
+  }
+  .console::before{
+    content:'';
+    position:absolute;inset:0;
+    border-radius:20px;
+    padding:1px;
+    background:linear-gradient(135deg, rgba(193,18,31,0.35), transparent 40%);
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+    pointer-events:none;
+  }
+  .console-header{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:30px;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .console-header .dots span{
+    display:inline-block;width:10px;height:10px;border-radius:50%;
+    margin-right:6px;
+  }
+  .dots .r{background:#ff5f57;}
+  .dots .y{background:#febc2e;}
+  .dots .g{background:#28c840;}
+
+  .field-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--text-faint);
+    margin-bottom:6px;
+    display:block;
+  }
+  .form-control, .form-select{
+    background:#0a0a0d;
+    border:1px solid var(--line);
+    color:var(--text);
+    border-radius:10px;
+    padding:12px 14px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.95rem;
+  }
+  .form-control::placeholder{color:var(--text-faint);font-family:'Inter',sans-serif;}
+  .form-control:focus, .form-select:focus{
+    background:#0a0a0d;
+    border-color:var(--crimson-bright);
+    color:var(--text);
+    box-shadow:0 0 0 3px rgba(255,59,78,0.15);
+  }
+  .form-select option{background:#0a0a0d;color:var(--text);}
+
+  #result .result-card{
+    background:#0a0a0d;
+    border:1px solid rgba(193,18,31,0.4);
+    border-radius:14px;
+    padding:32px;
+  }
+  #result .confidence-bar{
+    height:8px;border-radius:999px;background:var(--line);overflow:hidden;margin-top:14px;
+  }
+  #result .confidence-fill{
+    height:100%;background:linear-gradient(90deg, var(--crimson), var(--crimson-bright));
+    width:0%;transition:width 1s ease;
+  }
+
+  /* Contact */
+  .contact-card{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:40px;
+  }
+  .contact-info-item{display:flex;gap:16px;align-items:flex-start;margin-bottom:24px;}
+  .contact-info-item .ic{
+    width:44px;height:44px;border-radius:10px;
+    background:rgba(193,18,31,0.12);border:1px solid rgba(193,18,31,0.35);
+    display:flex;align-items:center;justify-content:center;color:var(--crimson-bright);
+    flex-shrink:0;
+  }
+  .contact-info-item h6{margin-bottom:2px;font-weight:600;}
+  .contact-info-item p{color:var(--text-dim);margin-bottom:0;font-size:0.9rem;}
+
+  /* Footer */
+  footer{
+    background:#050506;
+    border-top:1px solid var(--line);
+    padding:50px 0 30px;
+  }
+  footer .fbrand{font-family:'Sora',sans-serif;font-weight:700;font-size:1.3rem;}
+  footer p{color:var(--text-faint);font-size:0.88rem;}
+  .footer-links a{color:var(--text-dim);text-decoration:none;font-size:0.9rem;}
+  .footer-links a:hover{color:var(--crimson-bright);}
+  .social-ic{
+    width:38px;height:38px;border-radius:50%;
+    border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--text-dim);
+    margin-right:8px;
+    transition:all .2s ease;
+  }
+  .social-ic:hover{border-color:var(--crimson-bright);color:var(--crimson-bright);}
+
+  ::-webkit-scrollbar{width:9px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--line);border-radius:5px;}
+  ::-webkit-scrollbar-thumb:hover{background:var(--crimson);}
+
+  /* Back to top */
+  #backToTop{
+    position:fixed;bottom:26px;right:26px;
+    width:46px;height:46px;border-radius:50%;
+    background:var(--crimson);color:#fff;border:none;
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;visibility:hidden;transform:translateY(10px);
+    transition:all .3s ease;
+    z-index:999;
+    box-shadow:0 6px 20px -4px rgba(193,18,31,0.6);
+  }
+  #backToTop.show{opacity:1;visibility:visible;transform:translateY(0);}
+  #backToTop:hover{background:var(--crimson-bright);}
+
+  @media (max-width:768px){
+    section{padding:70px 0;}
+    .console{padding:26px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#"><i class="fas fa-heart-pulse me-2" style="color:var(--crimson-bright)"></i>HealthGuard<span class="accent">.AI</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color:var(--line)">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="#predict">Predict</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        <li class="nav-item ms-lg-2"><a class="nav-link nav-cta" href="#predict">Run Diagnostic</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <span class="eyebrow"><span class="dot"></span>Model status: online</span>
+        <h1 class="mt-4 text-white">Read your body's<br><span class="glow">signal</span>, before it shouts.</h1>
+        <p class="lead mt-4">HealthGuard AI turns everyday vitals, steps, sleep, heart rate, and activity, into an early, evidence-based read on your health condition. No wearable lock-in, no waiting room.</p>
+        <div class="d-flex gap-3 mt-4 flex-wrap">
+          <a href="#predict" class="btn btn-vital">Start Prediction <i class="fas fa-arrow-right ms-2"></i></a>
+          <a href="#about" class="btn btn-ghost">How it works</a>
+        </div>
+      </div>
+      <div class="col-lg-5 d-none d-lg-flex justify-content-center">
+        <div class="stat-box" style="width:100%;max-width:300px;">
+          <div class="d-flex justify-content-between mb-3">
+            <span class="mono" style="color:var(--text-faint);font-size:0.75rem;">LIVE SAMPLE</span>
+            <i class="fas fa-heart-pulse" style="color:var(--crimson-bright)"></i>
+          </div>
+          <div class="num" id="heroHR">72</div>
+          <div class="label">BPM · resting heart rate</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ECG signature -->
+    <div class="ecg-wrap">
+      <span class="ecg-label left">SIG_01 // ACTIVE</span>
+      <span class="ecg-label right">72 BPM</span>
+      <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path class="ecg-path" d="M0,60 L140,60 L165,60 L180,20 L200,100 L220,60 L260,60 L280,45 L300,60 L340,60 L440,60 L465,60 L480,20 L500,100 L520,60 L560,60 L580,45 L600,60 L640,60 L740,60 L765,60 L780,20 L800,100 L820,60 L860,60 L880,45 L900,60 L940,60 L1040,60 L1065,60 L1080,20 L1100,100 L1120,60 L1160,60 L1180,45 L1200,60"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 reveal">
+        <span class="section-eyebrow">// 01 — About the model</span>
+        <h2 class="section-title text-white mb-4">Built on real health data,<br>not guesswork</h2>
+        <p class="text-white-50 mt-3" style="color:var(--text-dim) !important;max-width:480px;">Our ensemble pipeline blends gradient-boosted trees with careful feature engineering, tuned specifically to catch early patterns in daily activity, sleep and cardiovascular signals.</p>
+        <ul class="list-unstyled about-list mt-4">
+          <li><i class="fas fa-database"></i><span><strong>Trained on real datasets</strong> — sourced and validated health records, not synthetic placeholders.</span></li>
+          <li><i class="fas fa-layer-group"></i><span><strong>Ensemble modeling</strong> — XGBoost, Random Forest and CatBoost voting together for stability.</span></li>
+          <li><i class="fas fa-sliders"></i><span><strong>Hyperparameter optimized</strong> — tuned via Optuna search to squeeze out every point of accuracy.</span></li>
+        </ul>
+      </div>
+      <div class="col-lg-6 mt-5 mt-lg-0">
+        <div class="row g-3 reveal">
+          <div class="col-6">
+            <div class="stat-box"><div class="num">94.2%</div><div class="label">Validation accuracy</div></div>
+          </div>
+          <div class="col-6">
+            <div class="stat-box"><div class="num">6</div><div class="label">Input vitals tracked</div></div>
+          </div>
+          <div class="col-6">
+            <div class="stat-box"><div class="num">3</div><div class="label">Models ensembled</div></div>
+          </div>
+          <div class="col-6">
+            <div class="stat-box"><div class="num">&lt;1s</div><div class="label">Prediction latency</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section id="services" class="section-alt">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span class="section-eyebrow">// 02 — What we offer</span>
+      <h2 class="section-title text-white">Three ways we watch your vitals</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4 reveal">
+        <div class="vital-card">
+          <span class="tag">CORE</span>
+          <div class="icon-wrap"><i class="fas fa-brain"></i></div>
+          <h4>AI Health Prediction</h4>
+          <p>Submit your daily vitals and get an instant, model-backed read on your likely health condition.</p>
+        </div>
+      </div>
+      <div class="col-md-4 reveal">
+        <div class="vital-card">
+          <span class="tag">INSIGHT</span>
+          <div class="icon-wrap"><i class="fas fa-chart-line"></i></div>
+          <h4>Lifestyle Analysis</h4>
+          <p>See exactly how sleep, steps and exercise duration move the needle on your predicted outcome.</p>
+        </div>
+      </div>
+      <div class="col-md-4 reveal">
+        <div class="vital-card">
+          <span class="tag">ALERT</span>
+          <div class="icon-wrap"><i class="fas fa-shield-heart"></i></div>
+          <h4>Early Warning System</h4>
+          <p>Flag concerning patterns early, so a conversation with your doctor happens before symptoms do.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Prediction Console -->
+<section id="predict">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span class="section-eyebrow">// 03 — Run a diagnostic</span>
+      <h2 class="section-title text-white">Health condition predictor</h2>
+      <p class="mt-3" style="color:var(--text-dim);max-width:560px;margin:0 auto;">Enter today's vitals below. The model runs locally on the server, nothing is stored.</p>
+    </div>
+    <div class="row justify-content-center reveal">
+      <div class="col-lg-9">
+        <div class="console">
+          <div class="console-header">
+            <div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+            <span class="mono" style="color:var(--text-faint);font-size:0.75rem;">vitals_console.exe</span>
+          </div>
+          <form id="predictForm">
+            <div class="row g-4">
+              <div class="col-md-6">
+                <label class="field-label">Step count</label>
+                <input type="number" class="form-control" name="step_count" placeholder="e.g. 8500" required>
+              </div>
+              <div class="col-md-6">
+                <label class="field-label">Exercise duration (min)</label>
+                <input type="number" step="0.1" class="form-control" name="exercise_duration" placeholder="e.g. 35" required>
+              </div>
+              <div class="col-md-6">
+                <label class="field-label">Sleep duration (hrs)</label>
+                <input type="number" step="0.1" class="form-control" name="sleep_duration" placeholder="e.g. 7.2" required>
+              </div>
+              <div class="col-md-6">
+                <label class="field-label">BMI</label>
+                <input type="number" step="0.01" class="form-control" name="bmi" placeholder="e.g. 23.4" required>
+              </div>
+              <div class="col-md-6">
+                <label class="field-label">Heart rate (bpm)</label>
+                <input type="number" class="form-control" name="heart_rate" placeholder="e.g. 72" required>
+              </div>
+              <div class="col-md-6">
+                <label class="field-label">Calorie expenditure</label>
+                <input type="number" step="0.1" class="form-control" name="calorie_expenditure" placeholder="e.g. 2100" required>
+              </div>
+              <div class="col-md-6">
+                <label class="field-label">Gender</label>
+                <select class="form-select" name="gender" required>
+                  <option value="">Select gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="field-label">Activity level</label>
+                <select class="form-select" name="activity_level" required>
+                  <option value="">Select level</option>
+                  <option value="Low">Low</option>
+                  <option value="Moderate">Moderate</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-vital w-100 mt-4 py-3">Run Prediction <i class="fas fa-heart-pulse ms-2"></i></button>
+          </form>
+
+          <div id="result" class="mt-4" style="display:none;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="section-alt">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span class="section-eyebrow">// 04 — Get in touch</span>
+      <h2 class="section-title text-white">Questions about your results?</h2>
+    </div>
+    <div class="row justify-content-center g-4 reveal">
+      <div class="col-lg-5">
+        <div class="contact-card h-100">
+          <div class="contact-info-item">
+            <div class="ic"><i class="fas fa-envelope"></i></div>
+            <div><h6>Email</h6><p>support@healthguard.ai</p></div>
+          </div>
+          <div class="contact-info-item">
+            <div class="ic"><i class="fas fa-location-dot"></i></div>
+            <div><h6>Location</h6><p>Colombo, Sri Lanka</p></div>
+          </div>
+          <div class="contact-info-item">
+            <div class="ic"><i class="fas fa-clock"></i></div>
+            <div><h6>Response time</h6><p>Within 24 hours</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="contact-card h-100">
+          <form>
+            <div class="mb-3"><label class="field-label">Name</label><input type="text" class="form-control" placeholder="Your name"></div>
+            <div class="mb-3"><label class="field-label">Email</label><input type="email" class="form-control" placeholder="you@example.com"></div>
+            <div class="mb-3"><label class="field-label">Message</label><textarea class="form-control" rows="4" placeholder="How can we help?"></textarea></div>
+            <button type="button" class="btn btn-vital w-100">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-4 mb-md-0">
+        <div class="fbrand text-white mb-2"><i class="fas fa-heart-pulse me-2" style="color:var(--crimson-bright)"></i>HealthGuard.AI</div>
+        <p>Predictive vitals intelligence, built with an ensemble of gradient-boosted models and a lot of care.</p>
+        <div class="d-flex mt-3">
+          <a href="#" class="social-ic"><i class="fab fa-github"></i></a>
+          <a href="#" class="social-ic"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" class="social-ic"><i class="fab fa-x-twitter"></i></a>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 mb-md-0">
+        <h6 class="text-white mb-3">Navigate</h6>
+        <div class="footer-links d-flex flex-column gap-2">
+          <a href="#about">About</a>
+          <a href="#services">Services</a>
+          <a href="#predict">Predict</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <h6 class="text-white mb-3">Disclaimer</h6>
+        <p>HealthGuard AI provides informational predictions only and is not a substitute for professional medical advice.</p>
+      </div>
+    </div>
+    <hr style="border-color:var(--line);margin:36px 0 20px;">
+    <div class="d-flex justify-content-between flex-wrap gap-2">
+      <p class="mb-0">&copy; 2026 HealthGuard AI. All rights reserved.</p>
+      <p class="mb-0" style="color:var(--crimson-bright);">Built with <i class="fas fa-heart"></i> using Flask + Bootstrap</p>
+    </div>
+  </div>
+</footer>
+
+<button id="backToTop"><i class="fas fa-arrow-up"></i></button>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// Scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); }
+  });
+},{threshold:0.15});
+revealEls.forEach(el=>io.observe(el));
+
+// Back to top
+const backBtn = document.getElementById('backToTop');
+window.addEventListener('scroll', ()=>{
+  backBtn.classList.toggle('show', window.scrollY > 500);
+});
+backBtn.addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
+
+// Hero heart rate micro-animation
+const hrEl = document.getElementById('heroHR');
+if(hrEl){
+  setInterval(()=>{
+    const base = 72;
+    const jitter = Math.floor(Math.random()*5)-2;
+    hrEl.textContent = base + jitter;
+  }, 2200);
+}
+
+// Prediction form submission
+document.getElementById('predictForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  const resultDiv = document.getElementById('result');
+  resultDiv.style.display = 'block';
+  resultDiv.innerHTML = `<div class="text-center py-3" style="color:var(--text-dim);"><i class="fas fa-circle-notch fa-spin me-2"></i>Running model...</div>`;
+
+  try {
+    const response = await fetch('/predict', { method: 'POST', body: formData });
+    const result = await response.json();
+
+    if (result.error) {
+      resultDiv.innerHTML = `<div class="alert" style="background:rgba(193,18,31,0.12);border:1px solid rgba(193,18,31,0.4);color:#ffb3ba;">${result.error}</div>`;
+    } else {
+      resultDiv.innerHTML = `
+        <div class="result-card">
+          <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+            <div>
+              <span class="mono" style="color:var(--text-faint);font-size:0.75rem;">PREDICTED CONDITION</span>
+              <h3 class="text-white mt-1 mb-0">${result.prediction}</h3>
+            </div>
+            <i class="fas fa-heart-pulse fa-2x" style="color:var(--crimson-bright)"></i>
+          </div>
+          <div class="mt-3">
+            <div class="d-flex justify-content-between">
+              <span class="mono" style="color:var(--text-faint);font-size:0.75rem;">CONFIDENCE</span>
+              <span class="mono" style="color:var(--text);font-size:0.85rem;">${result.confidence}%</span>
+            </div>
+            <div class="confidence-bar"><div class="confidence-fill" id="confFill"></div></div>
+          </div>
+          <button onclick="location.reload()" class="btn btn-ghost w-100 mt-4">Predict Again</button>
+        </div>
+      `;
+      requestAnimationFrame(()=>{
+        document.getElementById('confFill').style.width = result.confidence + '%';
+      });
+    }
+  } catch (err) {
+    resultDiv.innerHTML = `<div class="alert" style="background:rgba(193,18,31,0.12);border:1px solid rgba(193,18,31,0.4);color:#ffb3ba;">Error connecting to server</div>`;
+  }
+});
+</script>
+</body>
+</html>
