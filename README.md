@@ -20,7 +20,7 @@ The application will be running on [http://127.0.0.1:5001](http://127.0.0.1:5001
 ### 3. Access the Application
 Open your web browser and go to the URL [http://127.0.0.1:5001](http://127.0.0.1:5001) to start making predictions.
 
-✨ Features
+Features
 Machine Learning Powered
 Utilizes a highly tuned ensemble model : CatBoost, XGBoost, LightGBM, Random Forest for accurate predictions.
 
