@@ -8,7 +8,9 @@ A web application that predicts a student's health condition (Healthy, At-Risk, 
 
 ### 1. Install Dependencies
 Make sure you have Python 3.8+ installed. Navigate to the `WEBAPP` directory in your terminal and install the required packages:
-
+```
+pip install -r requirements.txt
+```
 
 ### 2. Run the Application
 Once the dependencies are installed, start the Flask web server:
